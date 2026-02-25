@@ -1,59 +1,157 @@
-# AAFrontEnd
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.5.
+## 🍺 Brewery Search — Angular (Signals + Signal Store)
 
-## Development server
+### Overview
 
-To start a local development server, run:
+This project is a brewery search application built with **Angular (standalone components)** using **NgRx Signal Store** for state management.
 
-```bash
-ng serve
-```
+The application allows users to:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* Search breweries via API
+* View search suggestions (top 5 with expand option)
+* Open brewery details
+* Persist and view search history
+* Re-open items from history (Optional)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧠 State Management — Signal Store
 
-```bash
-ng generate component component-name
-```
+The application uses **NgRx Signal Store** as the single source of truth for UI state.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Signal Store was chosen to:
 
-```bash
-ng generate --help
-```
+* Leverage Angular Signals (modern reactive model)
+* Reduce boilerplate compared to classic NgRx Store
+* Keep business logic outside components
+* Enable predictable state updates
+* Improve scalability and testability
 
-## Building
+The store manages:
 
-To build the project run:
+* Search results
+* Selected brewery (detail view)
+* Dropdown UI state (show full results)
 
-```bash
-ng build
-```
+Formatting (e.g. dates) is intentionally handled in components/templates to keep the store pure.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🏗️ Architecture
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+The application follows a **parent orchestrator pattern**:
 
-```bash
-ng test
-```
+* **Search (parent component)**
+  Handles search input, dropdown, and communicates with the store.
 
-## Running end-to-end tests
+* **BreweryDetail component**
+  Presentational component responsible for the detail view.
 
-For end-to-end (e2e) testing, run:
+* **SearchHistory component**
+  Presentational component responsible for displaying search history.
 
-```bash
-ng e2e
-```
+* **SearchStore**
+  Centralized state + business logic.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+* **Services**
 
-## Additional Resources
+  * `BreweryService` → API communication
+  * `HistoryService` → localStorage persistence
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This separation keeps components focused on UI while the store manages state transitions.
+
+---
+
+## 🔄 Application Flows
+
+### Flow 1 — Search
+
+1. User types in the search field
+2. Component calls `store.search(term)`
+3. Store fetches breweries via API
+4. Results stored in state
+5. Dropdown displays top 5 results with option to expand
+
+---
+
+### Flow 2 — Detail View
+
+1. User selects a brewery
+2. `store.selectBrewery()` executes
+3. History entry is saved
+4. Selected brewery stored in state
+5. Detail component renders
+
+---
+
+### Flow 3 — History View
+
+1. When no brewery is selected
+2. Search history is displayed
+3. Selecting an item calls `store.selectFromHistory()`
+4. Detail view opens again
+
+---
+
+## 💾 Search History Persistence
+
+Search history is stored using **localStorage** via `HistoryService`.
+
+Rules:
+
+* Maximum 10 items
+* No duplicates
+* Latest searches first
+* Reactive updates via Signals
+
+---
+
+## ⚡ Signals Usage
+
+Signals are used to:
+
+* Provide reactive UI updates
+* Derive filtered dropdown results
+* Eliminate manual subscriptions
+* Simplify change detection
+
+This results in a more predictable and lightweight reactive architecture.
+
+---
+
+## ✅ Key Design Decisions
+
+* Signal Store instead of classic NgRx → less boilerplate
+* Feature-level store → clearer scope
+* Presentational child components → separation of concerns
+* Store handles state, services handle IO, components handle UI
+* Date formatting handled in template, not store
+
+---
+
+## 🚀 Tech Stack
+
+* Angular (standalone components)
+* Angular Signals
+* NgRx Signal Store
+* RxJS
+* FontAwesome
+* Open Brewery DB API
+
+---
+
+## 📌 Notes
+
+This project demonstrates modern Angular patterns:
+
+* Signals-first architecture
+* Store-driven UI state
+* Smart vs presentational component separation
+
+Commands:
+Steps:
+1. Install Angular 21 and create new project 
+   - npx @angular/cli@latest new AA_front_end --style=scss --ssr=false
+2. Install fontawesome
+   - npm install @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
+3. npm install @ngrx/signals (signal store)

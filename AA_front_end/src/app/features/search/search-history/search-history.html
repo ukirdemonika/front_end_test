@@ -1,0 +1,16 @@
+<!-- This component displays the search history for breweries -->
+<div class="history-section">
+  <h3>Search history</h3>
+
+  @for (item of history(); track item.id + item.displayTimestamp) {
+    <div class="history-card" (click)="select.emit(item)">
+      <span>{{ item.name }} - {{ item.displayTimestamp | date: 'yyyy-MM-dd HH:mm' }}</span>
+
+      <button (click)="onDelete($event, item)">
+        <fa-icon [icon]="faXmark"></fa-icon>
+      </button>
+    </div>
+  } @empty {
+    <div class="empty-state">No search history found.</div>
+  }
+</div>

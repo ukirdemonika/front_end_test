@@ -1,0 +1,17 @@
+<!-- This file displays the details of a selected brewery -->
+@if (brewery(); as b) {
+  <div class="detail-card">
+    <div class="card-header">
+      <h2>{{ b.name }}</h2>
+      <button class="close-btn" (click)="close.emit()">
+        <fa-icon [icon]="faXmark"></fa-icon>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <p>Location: {{ b.street || 'N/A' }}, {{ b.city }}</p>
+      <p>Type: {{ b.brewery_type }}</p>
+      <p>Phone: {{ b.phone || 'N/A' }}</p>
+    </div>
+  </div>
+}

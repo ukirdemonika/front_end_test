@@ -1,0 +1,41 @@
+<!-- This file defines the main search page UI -->
+<main class="page-container">
+  <header>
+    <img [src]="logoUrl" style="max-width: 200px; display: block" alt="ASSA ABLOY" />
+  </header>
+
+  <section class="search-box">
+    <div class="input-wrapper">
+      <input type="text" placeholder="Search here..." [formControl]="searchControl" />
+      <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+    </div>
+    <!-- Flow-1 Display Dropdown according to input -->
+    @if (displayResults().length > 0) {
+      <ul class="dropdown">
+        @for (item of displayResults(); track item.id) {
+          <li (click)="store.selectBrewery(item)">{{ item.name }}</li>
+        }
+        @if (!store.showFullResults() && displayResults().length >= 5) {
+          <li class="action-row">
+            <button class="expand-btn" (click)="store.toggleShowFullResults()">
+              See all results
+            </button>
+          </li>
+        }
+      </ul>
+    }
+    <!-- Flow-2 Display Search Details -->
+    @if (store.selected(); as brewery) {
+      <app-brewery-detail [brewery]="brewery" (close)="store.closeDetail()"> </app-brewery-detail>
+    }
+    <!-- Flow-3 Display Search History -->
+    @else {
+      <app-search-history
+        [history]="store.getHistory()"
+        (select)="store.selectFromHistory($event)"
+        (delete)="store.deleteHistory($event)"
+      >
+      </app-search-history>
+    }
+  </section>
+</main>
