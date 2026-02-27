@@ -9,5 +9,5 @@ import { Search } from "./features/search/search";
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('AA_front_end');
+  title = 'AA_front_end';
 }

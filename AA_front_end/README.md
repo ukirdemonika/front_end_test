@@ -155,3 +155,34 @@ Steps:
 2. Install fontawesome
    - npm install @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 3. npm install @ngrx/signals (signal store)
+
+* ==============================================================================
+Test Coverage:
+* ==============================================================================
+PS D:\ASSA_ABLOY_Test\front_end_test\AA_front_end> npm test
+
+> aa-front-end@0.0.0 test
+> ng test  --browsers=Chrome --code-coverage
+
+✔ Console Ninja extension is connected to Angular, see https://tinyurl.com/2vt8jxzw
+✔ Browser application bundle generation complete.
+27 02 2026 00:55:11.676:WARN [karma]: No captured browser, open http://localhost:9876/
+27 02 2026 00:55:11.773:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+27 02 2026 00:55:11.775:INFO [launcher]: Launching browsers Chrome with concurrency unlimited
+27 02 2026 00:55:11.842:INFO [launcher]: Starting browser Chrome
+✔ Browser application bundle generation complete.
+27 02 2026 00:55:13.007:WARN [karma]: No captured browser, open http://localhost:9876/
+27 02 2026 00:55:14.949:INFO [Chrome 145.0.0.0 (Windows 10)]: Connected on socket H6lYjH3z_R0CPxsHAAAB with id 88370697
+Chrome 145.0.0.0 (Windows 10): Executed 7 of 36 SUCCESS (0 secs / 0.41 secs)
+Chrome 145.0.0.0 (Windows 10): Executed 9 of 36 SUCCESS (0 secs / 0.451 secs)
+Chrome 145.0.0.0 (Windows 10): Executed 11 of 36 SUCCESS (0 secs / 0.505 secs)
+Chrome 145.0.0.0 (Windows 10): Executed 36 of 36 SUCCESS (0.873 secs / 0.697 secs)
+TOTAL: 36 SUCCESS
+TOTAL: 36 SUCCESS
+
+=============================== Coverage summary ===============================
+Statements   : 100% ( 71/71 )
+Branches     : 100% ( 10/10 )
+Functions    : 100% ( 21/21 )
+Lines        : 100% ( 65/65 )
+================================================================================

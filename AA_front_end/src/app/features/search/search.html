@@ -12,7 +12,7 @@
     <!-- Flow-1 Display Dropdown according to input -->
     @if (displayResults().length > 0) {
       <ul class="dropdown">
-        @for (item of displayResults(); track item.id) {
+        @for (item of displayResults(); track item.id ) {
           <li (click)="store.selectBrewery(item)">{{ item.name }}</li>
         }
         @if (!store.showFullResults() && displayResults().length >= 5) {

@@ -6,7 +6,6 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-brewery-detail',
-  standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './brewery-detail.html',
   styleUrl: './brewery-detail.scss',

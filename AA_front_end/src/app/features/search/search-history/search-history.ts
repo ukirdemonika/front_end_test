@@ -6,7 +6,6 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search-history',
-  standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './search-history.html',
   styleUrl: './search-history.scss',

@@ -14,10 +14,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreweryDetail } from './brewery-detail/brewery-detail';
 import { SearchHistoryComponent } from './search-history/search-history';
 import { SearchStore } from '../../store/search.store';
+import type { Brewery } from '../../core/models/brewery.model';
 
 @Component({
   selector: 'app-search',
-  standalone: true,
   imports: [
     FontAwesomeModule,
     CommonModule,
@@ -41,7 +41,7 @@ export class Search {
   displayResults = computed(() => {
     const query = this.searchControl.value.toLowerCase().trim();
     const allResults = this.store.results();
-    const filtered = allResults.filter((b) => b.name.toLowerCase().includes(query));
+    const filtered = allResults.filter((b) => b.name.toLowerCase().includes(query))
     return this.store.showFullResults() ? filtered : filtered.slice(0, 5);
   });
 
@@ -57,4 +57,5 @@ export class Search {
         this.store.search(searchTerm); 
       });
   }
+
 }
