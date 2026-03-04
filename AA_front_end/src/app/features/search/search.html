@@ -3,7 +3,6 @@
   <header>
     <img [src]="logoUrl" style="max-width: 200px; display: block" alt="ASSA ABLOY" />
   </header>
-
   <section class="search-box">
     <div class="input-wrapper">
       <input type="text" placeholder="Search here..." [formControl]="searchControl" />
@@ -33,9 +32,7 @@
         <!-- Show Less button -->
         @if (store.showFullResults()) {
           <li class="action-row">
-            <button class="expand-btn" (click)="store.toggleShowLess()">
-              Show Less
-            </button>
+            <button class="expand-btn" (click)="store.toggleShowLess()">Show Less</button>
           </li>
         }
       </ul>

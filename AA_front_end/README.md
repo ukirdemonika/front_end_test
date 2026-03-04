@@ -155,6 +155,7 @@ Steps:
 2. Install fontawesome
    - npm install @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 3. npm install @ngrx/signals (signal store)
+4. ngx-toastr - Display toaster error message
 
 * ==============================================================================
 Test Coverage:

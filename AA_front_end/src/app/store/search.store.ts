@@ -9,11 +9,14 @@ import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { Brewery, SearchHistory } from '../core/models/brewery.model';
 import { BreweryService } from '../core/services/brewery.service';
 import { HistoryService } from '../core/services/history.service';
+import { catchError } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 type State = {
   results: Brewery[];
   selected: Brewery | null;
   showFullResults: boolean;
+  errorMessage: string;
 };
 
 export const SearchStore = signalStore(
@@ -24,27 +27,46 @@ export const SearchStore = signalStore(
     results: [],
     selected: null,
     showFullResults: false,
+    errorMessage: '',
   }),
 
   // Methods that define the logic for searching, selecting breweries, managing history, and toggling results display
   withMethods((store) => {
     const breweryService = inject(BreweryService);
     const historyService = inject(HistoryService);
+    const toastr = inject(ToastrService);
 
     return {
       // Search method that takes a search term, validates it, and fetches results from the BreweryService.
       search(term: string) {
-        if (!term || term.trim().length < 3) {
+        /*if (!term || term.trim().length < 3) {
           patchState(store, { results: [] });
           return;
-        }
+        }*/
 
-        breweryService.search(term).subscribe((data) => {
-          patchState(store, {
-            results: data,
-            showFullResults: false,
+        breweryService
+          .search(term)
+          .pipe(
+            catchError((err) => {
+              console.error('Search error:', err);
+              const errorMsg = 'Unable to fetch search results. Please try again later.';
+              patchState(store, {
+                results: [],
+                errorMessage: errorMsg,
+              });
+              toastr.error(errorMsg, 'Error');
+              return [];
+            }),
+          )
+          .subscribe((data) => {
+            patchState(store, {
+              results: data,
+              showFullResults: false,
+            });
+            if (data.length === 0 && term.trim().length > 0) {
+              toastr.info('No results found for: ' + term, 'No Results');
+            }
           });
-        });
       },
       // Method to handle selection of a brewery from the search results, which also saves the selection to history and updates the state to show details.
       selectBrewery(brewery: Brewery) {

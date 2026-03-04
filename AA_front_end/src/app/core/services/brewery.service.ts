@@ -7,7 +7,7 @@ The service uses Angular's HttpClient to make HTTP requests and includes error h
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Brewery } from '../models/brewery.model';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BreweryService {
@@ -18,8 +18,13 @@ export class BreweryService {
   search(query: string): Observable<Brewery[]> {
     if (!query.trim()) return of([]);
     // per_page=10 to fulfill the "max 10" requirement
-    return this.http
-      .get<Brewery[]>(`${this.API_URL}?query=${query}&per_page=10`)
-      .pipe(catchError(() => of([])));
+    return this.http.get<Brewery[]>(`${this.API_URL}?query=${query}&per_page=10`).pipe(
+      catchError((err) => {
+        console.error('Search failed:', err);
+        return throwError(
+          () => new Error('Unable to fetch search results. Please try again later.'),
+        );
+      }),
+    );
   }
 }
