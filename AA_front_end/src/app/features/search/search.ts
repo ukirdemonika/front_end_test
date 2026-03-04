@@ -4,7 +4,7 @@ The search input is debounced to optimize API calls, and the dropdown filters re
 When a brewery is selected, its details are shown, and if no brewery is selected, the search history is displayed instead.
 ============================================================================= */
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, effect } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSearch, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,7 @@ import { SearchHistoryComponent } from './search-history/search-history';
 import { SearchStore } from '../../store/search.store';
 import type { Brewery } from '../../core/models/brewery.model';
 import { Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-search',
@@ -34,6 +35,7 @@ export class Search {
   faSearch = faSearch;
   faXmark = faXmark;
   private sanitizer = inject(DomSanitizer);
+  private toastr = inject(ToastrService);
 
   logoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/images/aa-test-logo.svg');
   searchControl = new FormControl<string>('', { nonNullable: true ,validators: [Validators.minLength(3)] });
@@ -57,6 +59,20 @@ export class Search {
       .subscribe((searchTerm) => {
         this.store.search(searchTerm); 
       });
+
+  
+    // This effect runs whenever displayResults changes, showing a success message if results are found or an info message if no results match the search term
+    effect(() => {
+      const results = this.displayResults();
+      const storeResults = this.store.results();
+      const searchTerm = this.searchControl.value.trim();
+      
+      if (results.length > 0) {
+        this.toastr.success('Found ' + results.length + ' result(s)', 'Success');
+      } else if (results.length === 0 && storeResults.length > 0 && searchTerm.length > 2) {
+        this.toastr.info('No matching results found', 'No Results');
+      }
+    });
   }
 
 }

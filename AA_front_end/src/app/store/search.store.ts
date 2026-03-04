@@ -39,10 +39,19 @@ export const SearchStore = signalStore(
     return {
       // Search method that takes a search term, validates it, and fetches results from the BreweryService.
       search(term: string) {
-        /*if (!term || term.trim().length < 3) {
+        const trimmedTerm = term.trim();
+        
+        if (!trimmedTerm) {
           patchState(store, { results: [] });
+          toastr.warning('Please enter a search term.', 'Empty Input');
           return;
-        }*/
+        }
+        
+        if (trimmedTerm.length <= 2) {
+          patchState(store, { results: [] });
+          toastr.warning('Search term must be at least 3 characters long.', 'Validation Error');
+          return;
+        }
 
         breweryService
           .search(term)
@@ -63,7 +72,7 @@ export const SearchStore = signalStore(
               results: data,
               showFullResults: false,
             });
-            if (data.length === 0 && term.trim().length > 0) {
+            if (data.length === 0) {
               toastr.info('No results found for: ' + term, 'No Results');
             }
           });
