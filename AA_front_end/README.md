@@ -147,6 +147,13 @@ This project demonstrates modern Angular patterns:
 * Signals-first architecture
 * Store-driven UI state
 * Smart vs presentational component separation
+  
+## 📌 Validation Handling:
+  * npm i ngx-toastr
+     -  Warning toaster - Empty input or 1-2 character validation
+     -  Success toaster - When results are found and displayed
+     -  Info toaster - When search returns no matching results
+     -  Error toaster - When API fails
 
 Commands:
 Steps:
