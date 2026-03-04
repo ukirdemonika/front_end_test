@@ -15,6 +15,7 @@ import { BreweryDetail } from './brewery-detail/brewery-detail';
 import { SearchHistoryComponent } from './search-history/search-history';
 import { SearchStore } from '../../store/search.store';
 import type { Brewery } from '../../core/models/brewery.model';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -35,7 +36,7 @@ export class Search {
   private sanitizer = inject(DomSanitizer);
 
   logoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/images/aa-test-logo.svg');
-  searchControl = new FormControl<string>('', { nonNullable: true });
+  searchControl = new FormControl<string>('', { nonNullable: true ,validators: [Validators.minLength(3)] });
 
   // Computed signal to filter and limit results based on the current search term and showFullResults flag
   displayResults = computed(() => {

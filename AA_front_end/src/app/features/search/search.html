@@ -8,17 +8,33 @@
     <div class="input-wrapper">
       <input type="text" placeholder="Search here..." [formControl]="searchControl" />
       <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+      @if (searchControl.errors?.['minlength']) {
+        <div class="error-message">
+          Please enter at least {{ searchControl.errors?.['minlength'].requiredLength }} characters
+          to search.
+        </div>
+        <div class="error-message">Current length: {{ searchControl.value.length }}</div>
+      }
     </div>
     <!-- Flow-1 Display Dropdown according to input -->
     @if (displayResults().length > 0) {
       <ul class="dropdown">
-        @for (item of displayResults(); track item.id ) {
+        @for (item of displayResults(); track item.id) {
           <li (click)="store.selectBrewery(item)">{{ item.name }}</li>
         }
+        <!-- Show More button -->
         @if (!store.showFullResults() && displayResults().length >= 5) {
           <li class="action-row">
             <button class="expand-btn" (click)="store.toggleShowFullResults()">
               See all results
+            </button>
+          </li>
+        }
+        <!-- Show Less button -->
+        @if (store.showFullResults()) {
+          <li class="action-row">
+            <button class="expand-btn" (click)="store.toggleShowLess()">
+              Show Less
             </button>
           </li>
         }

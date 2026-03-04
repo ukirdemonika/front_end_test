@@ -60,7 +60,7 @@ export const SearchStore = signalStore(
           results: [],
         });
       },
-      
+
       // Method to handle selection of a brewery from the search history, which updates the state to show details without making a new API call.
       selectFromHistory(item: SearchHistory) {
         patchState(store, {
@@ -82,6 +82,9 @@ export const SearchStore = signalStore(
 
       toggleShowFullResults() {
         patchState(store, { showFullResults: true });
+      },
+      toggleShowLess() {
+        patchState(store, { showFullResults: false });
       },
       getHistory() {
         return historyService.history();
