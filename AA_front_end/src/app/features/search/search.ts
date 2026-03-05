@@ -36,6 +36,7 @@ export class Search {
   faXmark = faXmark;
   private sanitizer = inject(DomSanitizer);
   private toastr = inject(ToastrService);
+  store = inject(SearchStore);
 
   logoUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/images/aa-test-logo.svg');
   searchControl = new FormControl<string>('', { nonNullable: true ,validators: [Validators.minLength(3)] });
@@ -45,10 +46,23 @@ export class Search {
     const query = this.searchControl.value.toLowerCase().trim();
     const allResults = this.store.results();
     const filtered = allResults.filter((b) => b.name.toLowerCase().includes(query))
-    return this.store.showFullResults() ? filtered : filtered.slice(0, 5);
+    if (!this.store.showFullResults()) {
+      return filtered.slice(0, 5);
+    } else {
+      // Pagination Slice (10 per page)
+      const start = this.store.currentPage() * this.store.pageSize();
+      const end = start + this.store.pageSize();
+      return filtered.slice(start, end);
+    }
   });
 
-  store = inject(SearchStore);
+ // Helper for pagination UI
+  totalResultsCount = computed(() => {
+    const query = this.searchControl.value.toLowerCase().trim();
+    return this.store.results().filter((b) => b.name.toLowerCase().includes(query)).length;
+  });
+
+  totalPages = computed(() => Math.ceil(this.totalResultsCount() / this.store.pageSize()));
 
   // Constructor sets up a subscription to the search input changes, applying debounce and distinctUntilChanged to optimize API calls
   constructor() {
