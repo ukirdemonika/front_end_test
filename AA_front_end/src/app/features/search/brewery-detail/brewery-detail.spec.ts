@@ -21,10 +21,12 @@ describe('BreweryDetail', () => {
     fixture.detectChanges();
   });
 
+  // Component Creation Test
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  // Input Signal Binding Tests - brewery input handling
   it('should accept brewery input', () => {
     fixture.componentRef.setInput('brewery', mockBrewery);
     fixture.detectChanges();
@@ -32,6 +34,7 @@ describe('BreweryDetail', () => {
     expect(component.brewery()).toEqual(mockBrewery);
   });
 
+  // Output Event Emission Tests - close button functionality
   it('should emit close event', () => {
     const spy = jasmine.createSpy('closeSpy');
     component.close.subscribe(spy);

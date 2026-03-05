@@ -3,27 +3,49 @@
   <header>
     <img [src]="logoUrl" style="max-width: 200px; display: block" alt="ASSA ABLOY" />
   </header>
-
   <section class="search-box">
     <div class="input-wrapper">
       <input type="text" placeholder="Search here..." [formControl]="searchControl" />
       <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
     </div>
+
     <!-- Flow-1 Display Dropdown according to input -->
-    @if (displayResults().length > 0) {
+    @if (displayResults().length > 0 && !store.selected()) {
       <ul class="dropdown">
-        @for (item of displayResults(); track item.id ) {
+        @for (item of displayResults(); track item.id) {
           <li (click)="store.selectBrewery(item)">{{ item.name }}</li>
         }
-        @if (!store.showFullResults() && displayResults().length >= 5) {
+
+        <!-- Initial "See all results" Button -->
+        @if (!store.showFullResults() && totalResultsCount() > 5) {
           <li class="action-row">
             <button class="expand-btn" (click)="store.toggleShowFullResults()">
-              See all results
+              See all results ({{ totalResultsCount() }})
             </button>
+          </li>
+        }
+
+        <!-- Pagination Controls (Visible when See All is clicked) -->
+        @if (store.showFullResults()) {
+          <li class="pagination-footer">
+            <div class="pager-controls">
+              <button [disabled]="store.currentPage() === 0" (click)="store.prevPage()">
+                Prev
+              </button>
+              <span>Page {{ store.currentPage() + 1 }} of {{ totalPages() }}</span>
+              <button
+                [disabled]="store.currentPage() >= totalPages() - 1"
+                (click)="store.nextPage()"
+              >
+                Next
+              </button>
+            </div>
+            <button class="show-less-link" (click)="store.toggleShowLess()">Show Less</button>
           </li>
         }
       </ul>
     }
+
     <!-- Flow-2 Display Search Details -->
     @if (store.selected(); as brewery) {
       <app-brewery-detail [brewery]="brewery" (close)="store.closeDetail()"> </app-brewery-detail>

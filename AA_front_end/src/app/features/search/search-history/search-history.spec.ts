@@ -35,6 +35,7 @@ describe('SearchHistoryComponent', () => {
     expect(component.history()).toEqual(mockHistory);
   });
 
+  // Event Emission Tests - user interaction and cleanup
   it('should emit select event', () => {
     const spy = jasmine.createSpy('selectSpy');
     component.select.subscribe(spy);

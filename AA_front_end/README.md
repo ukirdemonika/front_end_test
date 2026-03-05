@@ -147,6 +147,13 @@ This project demonstrates modern Angular patterns:
 * Signals-first architecture
 * Store-driven UI state
 * Smart vs presentational component separation
+  
+## 📌 Validation Handling:
+  * npm i ngx-toastr
+     -  Warning toaster - Empty input or 1-2 character validation
+     -  Success toaster - When results are found and displayed
+     -  Info toaster - When search returns no matching results
+     -  Error toaster - When API fails
 
 Commands:
 Steps:
@@ -155,6 +162,7 @@ Steps:
 2. Install fontawesome
    - npm install @fortawesome/angular-fontawesome @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 3. npm install @ngrx/signals (signal store)
+4. ngx-toastr - Display toaster error message
 
 * ==============================================================================
 Test Coverage:
@@ -186,3 +194,5 @@ Branches     : 100% ( 10/10 )
 Functions    : 100% ( 21/21 )
 Lines        : 100% ( 65/65 )
 ================================================================================
+
+Created dev branch and creating pull request to merge into master
