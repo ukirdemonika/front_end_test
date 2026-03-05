@@ -9,7 +9,7 @@ import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { Brewery, SearchHistory } from '../core/models/brewery.model';
 import { BreweryService } from '../core/services/brewery.service';
 import { HistoryService } from '../core/services/history.service';
-import { catchError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 type State = {
@@ -64,7 +64,7 @@ export const SearchStore = signalStore(
                 errorMessage: errorMsg,
               });
               toastr.error(errorMsg, 'Error');
-              return [];
+              return of([]);
             }),
           )
           .subscribe((data) => {

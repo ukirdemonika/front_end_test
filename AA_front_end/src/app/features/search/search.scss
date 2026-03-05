@@ -2,9 +2,7 @@ $primary-blue: #304a70;
 $secondary-blue: #5983c1;
 $white: #ffffff;
 :host {
-  display: block;
-  height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .page-container {
@@ -16,7 +14,7 @@ $white: #ffffff;
   align-items: center;
   padding-top: 90px;
   gap: 28px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .search-box {
@@ -52,8 +50,7 @@ $white: #ffffff;
   margin-top: 1px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 3000;
-
-  li {
+   li {
     padding: 12px 20px;
     border-bottom: 1px solid #b4b1b1;
     color: #717171;

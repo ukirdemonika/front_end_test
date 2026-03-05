@@ -21,9 +21,7 @@ export class BreweryService {
     return this.http.get<Brewery[]>(`${this.API_URL}?query=${query}&per_page=10`).pipe(
       catchError((err) => {
         console.error('Search failed:', err);
-        return throwError(
-          () => new Error('Unable to fetch search results. Please try again later.'),
-        );
+        return of([]);
       }),
     );
   }

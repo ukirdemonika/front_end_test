@@ -2,9 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { HistoryService } from './history.service';
 import { SearchHistory } from '../models/brewery.model';
 
+/**
+ * History Service Tests
+ * Tests localStorage persistence for search history management
+ */
 describe('HistoryService', () => {
   let service: HistoryService;
 
+  // LocalStorage key constant
   const KEY = 'aa_brewery_history';
 
   const createItem = (id: string): SearchHistory => ({
@@ -17,7 +22,9 @@ describe('HistoryService', () => {
     displayTimestamp: new Date().toISOString(),
   });
 
+  // Setup - clear storage and create fresh service instance
   beforeEach(() => {
+    // Clear localStorage before each test to ensure isolation
     localStorage.clear();
 
     TestBed.configureTestingModule({
@@ -29,6 +36,7 @@ describe('HistoryService', () => {
 
   /* ---------------- LOAD ---------------- */
 
+  // Initialization Tests
   it('should initialize with empty history when localStorage empty', () => {
     expect(service.history()).toEqual([]);
   });
@@ -43,6 +51,7 @@ describe('HistoryService', () => {
 
   /* ---------------- SAVE ---------------- */
 
+  // Save and Persistence Tests
   it('should save item to history', () => {
     const item = createItem('1');
 
@@ -82,6 +91,7 @@ describe('HistoryService', () => {
 
   /* ---------------- DELETE ---------------- */
 
+  // Delete Operations Tests
   it('should delete specific history item', () => {
     const item = createItem('1');
     service.save(item);
