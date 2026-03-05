@@ -1,3 +1,4 @@
+<!-- This file defines the main search page UI -->
 <main class="page-container">
   <header>
     <img [src]="logoUrl" style="max-width: 200px; display: block" alt="ASSA ABLOY" />
@@ -8,6 +9,7 @@
       <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
     </div>
 
+    <!-- Flow-1 Display Dropdown according to input -->
     @if (displayResults().length > 0 && !store.selected()) {
       <ul class="dropdown">
         @for (item of displayResults(); track item.id) {
@@ -27,9 +29,16 @@
         @if (store.showFullResults()) {
           <li class="pagination-footer">
             <div class="pager-controls">
-              <button [disabled]="store.currentPage() === 0" (click)="store.prevPage()">Prev</button>
+              <button [disabled]="store.currentPage() === 0" (click)="store.prevPage()">
+                Prev
+              </button>
               <span>Page {{ store.currentPage() + 1 }} of {{ totalPages() }}</span>
-              <button [disabled]="store.currentPage() >= totalPages() - 1" (click)="store.nextPage()">Next</button>
+              <button
+                [disabled]="store.currentPage() >= totalPages() - 1"
+                (click)="store.nextPage()"
+              >
+                Next
+              </button>
             </div>
             <button class="show-less-link" (click)="store.toggleShowLess()">Show Less</button>
           </li>
@@ -37,9 +46,12 @@
       </ul>
     }
 
+    <!-- Flow-2 Display Search Details -->
     @if (store.selected(); as brewery) {
       <app-brewery-detail [brewery]="brewery" (close)="store.closeDetail()"> </app-brewery-detail>
-    } @else {
+    }
+    <!-- Flow-3 Display Search History -->
+    @else {
       <app-search-history
         [history]="store.getHistory()"
         (select)="store.selectFromHistory($event)"

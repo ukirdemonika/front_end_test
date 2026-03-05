@@ -1,3 +1,8 @@
+/* ===========================================================================
+This file defines the SearchStore, which manages the state and logic for the search feature of the application. 
+It uses Angular's dependency injection to access the BreweryService for fetching search results and the HistoryService for managing search history.
+The store includes methods for performing searches, selecting breweries, handling search history, and toggling the display of results.
+============================================================================= */
 import { inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 import { Brewery, SearchHistory } from '../core/models/brewery.model';
@@ -11,12 +16,14 @@ type State = {
   selected: Brewery | null;
   showFullResults: boolean;
   errorMessage: string;
-  currentPage: number; // Added for pagination
-  pageSize: number; // Added for pagination
+  currentPage: number;
+  pageSize: number;
 };
 
 export const SearchStore = signalStore(
   { providedIn: 'root' },
+
+  // Initial state of the store
   withState<State>({
     results: [],
     selected: null,
@@ -25,12 +32,15 @@ export const SearchStore = signalStore(
     currentPage: 0,
     pageSize: 10,
   }),
+
+  // Methods that define the logic for searching, selecting breweries, managing history, and toggling results display
   withMethods((store) => {
     const breweryService = inject(BreweryService);
     const historyService = inject(HistoryService);
     const toastr = inject(ToastrService);
 
     return {
+      // Search method that takes a search term, validates it, and fetches results from the BreweryService.
       search(term: string) {
         const trimmedTerm = term.trim();
         if (!trimmedTerm || trimmedTerm.length <= 2) {
@@ -63,6 +73,8 @@ export const SearchStore = signalStore(
           patchState(store, { currentPage: store.currentPage() - 1 });
         }
       },
+
+      // Method to handle selection of a brewery from the search results, which also saves the selection to history and updates the state to show details.
       selectBrewery(brewery: Brewery) {
         const entry: SearchHistory = { ...brewery, displayTimestamp: new Date().toISOString() };
         historyService.save(entry);
@@ -73,6 +85,8 @@ export const SearchStore = signalStore(
           currentPage: 0,
         });
       },
+
+      // Method to handle selection of a brewery from the search history, which updates the state to show details without making a new API call.
       selectFromHistory(item: SearchHistory) {
         patchState(store, { selected: item, results: [], currentPage: 0 });
       },
